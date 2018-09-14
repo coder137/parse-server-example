@@ -14,7 +14,7 @@ var api = new ParseServer({
   // fileKey: 'optionalFileKey',
   serverURL: 'http://localhost:1337/parse', // Don't forget to change to https if needed
   liveQuery: {
-    classNames: ["Test", "Tests", "testnames"]
+    classNames: ["Test", "Devices"]
   }
 });
 
