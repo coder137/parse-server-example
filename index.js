@@ -8,7 +8,7 @@ var port = 1337;
 
 var api = new ParseServer({
   databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
-  // cloud: __dirname + '/cloud/main.js', // Absolute path to your Cloud Code
+  cloud: __dirname + '/cloud/main.js', // Absolute path to your Cloud Code
   appId: 'myAppId',
   masterKey: 'myMasterKey', // Keep this key secret!
   // fileKey: 'optionalFileKey',
@@ -22,11 +22,18 @@ var options = { allowInsecureHTTP: true };
 
 var dashboard = new ParseDashboard({
   "apps": [{
-      "serverURL": "http://192.168.29.186:1337/parse",
+      "serverURL": "http://127.0.0.1:1337/parse",
       "appId": "myAppId",
       "masterKey": "myMasterKey",
-      "appName": "MyApp"
-  }],
+      "appName": "LocalApp"
+  }
+  // {
+  //   "serverURL": "http://127.0.0.1:1337/parse",
+  //   "appId":"myAppId",
+  //   "masterKey":"myMasterKey",
+  //   "appName":"LocalApp"
+  // }
+],
   "users": [{
       "user": "admin",
       "pass": "admin_password"
