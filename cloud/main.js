@@ -1,4 +1,9 @@
 /*
+Version 1.2
+	Kshitij Bantupalli
+		Fixed typos.
+
+
 Version 1.1
 	Kshitij Bantupalli
 		Refactored code for user ACL and fixed a bunch of permission stuff.
@@ -62,8 +67,8 @@ Parse.Cloud.define('setDeviceACL', function(request, response) {
 	var params = request.params;
 	const Device = Parse.Object.extends("Device");
 	var user = new Parse.user();
-	var device = const new Device();
-	device.set("Name" : params.name)
+	var device = new Device();
+	device.set("Name", params.name)
 	device.setACL(new Parse.ACL(Parse.User.Current(), set({
 		useMasterKey: true
 	})));
