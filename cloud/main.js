@@ -48,33 +48,48 @@ Parse.Cloud.define('hello', function(request, response) {
 	Input : JSON (username, password, email)
 	Output : None.
 */
-Parse.Cloud.define('addACLUser', function(request, response) {
-	var user = new Parse.User();
-	var objectId = user._getid()
-	var acl = new Parse.ACL(user);
-	var success = user.setACL(acl, set({
-		ACL : objectId,
-		useMasterKey: true
-	}));
-	user.save().then((us) => response.success(us));
-});
+// Parse.Cloud.define('addACLUser', function(request, response) {
+// 	var Note = Parse.Object.extend("User")
+// 	var user = new Note();
+// 	// var objectId = user.objectId;
+// 	user.setACL(new Parse.ACL(Parse.User.current()));
+// 	var acl = new Parse.ACL(Parse.User.current());
+// 	acl.setPublicReadAccess(false);
+// 	user.save().then((us) => response.success(us));
+// });
 
 
 /*
 	Set device ACL.
 */
-Parse.Cloud.define('setDeviceACL', function(request, response) {
-	var params = request.params;
-	const Device = Parse.Object.extends("Device");
-	var user = new Parse.user();
-	var device = new Device();
-	device.set("Name", params.name)
-	device.setACL(new Parse.ACL(Parse.User.Current(), set({
-		useMasterKey: true
-	})));
-	device.save().then((dev) => response.success(dev));
-});
+// Parse.Cloud.define('setDeviceACL', function(request, response) {
+// 	var params = request.params;
+// 	const Device = Parse.Object.extends("Device");
+// 	var user = new Parse.user();
+// 	var device = new Device();
+// 	device.set("Name", params.name)
+// 	device.setACL(new Parse.ACL(Parse.User.current(), set({
+// 		useMasterKey: true
+// 	})));
+// 	device.save().then((dev) => response.success(dev));
+// });
 
+
+/*
+	Querying Device Table.
+*/
+Parse.Cloud.define('queryDevice', function(request, response) {
+	var params = request.params;
+	if(!request.object.get("username")) || if(!request.object.get("username") == null) {
+		throw "Username is required.";
+	}
+	var Device = Parse.Object.extend("Device");
+	var query = new Parse.Query(Device);
+	query.get(request.mac_id)
+	.then((gamescore) => {
+		throw "MAC_ID exists.";
+	});
+});
 
 
 
