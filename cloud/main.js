@@ -1,4 +1,11 @@
 /*
+Version 1.3
+	Kshitij Bantupalli
+		I think I did it lads.
+		When you call registerDevice() it queries the Device table it adds a new row and
+		sets the device ACL to the user.
+
+
 Version 1.2
 	Kshitij Bantupalli
 		Fixed typos.
@@ -78,18 +85,74 @@ Parse.Cloud.define('hello', function(request, response) {
 /*
 	Querying Device Table.
 */
-Parse.Cloud.define('queryDevice', function(request, response) {
-	var params = request.params;
-	if(!request.object.get("username")) || if(!request.object.get("username") == null) {
-		throw "Username is required.";
+Parse.Cloud.define('registerDevice', function(request, response) {
+	// Parse.Cloud.useMasterKey();
+	if(!request.params.user) {
+		throw "Enter username.";
+		// Console.log("Enter username.")
 	}
 	var Device = Parse.Object.extend("Device");
+	const device = new Device;
 	var query = new Parse.Query(Device);
-	query.get(request.mac_id)
-	.then((gamescore) => {
-		throw "MAC_ID exists.";
+	query.equalTo("mac", request.params.mac);
+	query.find().then(
+		function(success){
+			Console.log("Error. It exists.");
+		},
+		function(error){
+			Console.log("Error.");
+		}
+
+	);
+	var username = request.params.user;
+	var acl = new Parse.ACL();
+	acl.setPublicReadAccess(false);
+	getId(username).then
+	(
+		function(user) {
+			response.success(user);
+			acl.setWriteAccess(user.id, true);
+			acl.setReadAccess(user.id, true);
+			device.setACL(acl);
+			device.save();
+			// Console.log(objectId);
+		},
+		function(error) {
+			response.error(error);
+		}
+
+	);
+
+	device.set("mac", request.params.mac);
+	device.set("local_ip", request.params.local_ip);
+	device.set("pin1", request.params.pin1);
+	device.set("pin2", request.params.pin2);
+	device.set("pin3", request.params.pin3);
+	device.set("device_name", request.params.room);
+
+	device.save()
+	.then((device) => {
+		alert("Device created successfully.");
+	}, (error) => {
+		alert("Failure to create device.");
 	});
 });
+
+function getId(user) {
+	var userQuery = new Parse.Query(Parse.User);
+	userQuery.equalTo("username", user);
+	return userQuery.first
+	({
+		success: function(userRetrieved)
+		{
+			return userRetrieved;
+		},
+		error: function(error)
+		{
+			return error
+		}
+	});
+};
 
 
 
