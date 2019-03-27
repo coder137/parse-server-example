@@ -1,9 +1,4 @@
 /*
-Version 1.5
-	Kshitij Bantupalli
-		Added default values for schema.
-		Removed throws and replaced them with error statements.
-
 Version 1.4
 	Kshitij Bantupalli
 		Fixed CPL permissions.
@@ -45,8 +40,8 @@ Parse.Cloud.define('hello', function(request, response) {
 */
 Parse.Cloud.define('registerDevice', function(request, response) {
 	// Parse.Cloud.useMasterKey();
-	if(!request.params.user) {
-		response.error("Missing data. Cannot continue.");
+	if(!request.params.user || !request.params.pin1 || !request.params.pin2 || !request.params.pin3 || !request.params.room) {
+		throw "Missing data. Cannot continue.";
 		// Console.log("Enter username.")
 	}
 	var Device = Parse.Object.extend("Device", {useMasterKey: true});
@@ -56,8 +51,12 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 	query.equalTo("mac", request.params.mac);
 	query.find().then(
 		function(success){
-			response.error("Error MACID exists.");
+			console.log("Error. It exists.");
+		},
+		function(error){
+			console.log("Error.");
 		}
+
 	);
 	// console.log("Check 2");
 	var username = request.params.user;
@@ -75,77 +74,20 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 			// Console.log(objectId);
 		},
 		function(error) {
-			response.error("Cant access ACL's");
+			throw "Cant access ACL's";
 		}
 
 	);
 
 	// console.log("Check 3");
-
-
-	/*
-		Set values for the row in the table.
-	*/
 	device.set("mac", request.params.mac, {useMasterKey : true});
 	device.set("local_ip", request.params.local_ip, {useMasterKey: true});
-	if(request.params.pin1) {
-		device.set("pin1", request.params.pin1, {useMasterKey: true});
-	}
-	else {
-		device.set("pin1", 1, {useMasterKey: true});
-	}
-	if (request.params.pin2) {
-		device.set("pin2", request.params.pin2, {useMasterKey: true});
-	}
-	else {
-		device.set("pin2", "2", {useMasterKey: true});
-	}
-	if (request.params.pin3) {
-		device.set("pin3", request.params.pin3, {useMasterKey: true});
-	}
-	else {
-		device.set("pin3", "3", {useMasterKey:true});
-	}
-	if (request.params.pin4) {
-		device.set("pin4", request.params.pin4, {useMasterKey: true});
-	}
-	else {
-		device.set("pin4", "4", {useMasterKey: true});
-	}
-	if (request.params.deviceName) {
-	device.set("device_name", request.params.deviceName, {useMasterKey: true});
-	}
-	else {
-		device.set("device_name", "Room", {useMasterKey: true});
-	}
-	if (request.params.pin1Asset) {
-		device.set("pin1Asset", request.params.pin1Asset, {useMasterKey: true});
-	}
-	else {
-		device.set("pin1Asset", "1", {useMasterKey: true});
-	}
-	if (request.params.pin2Asset) {
-		device.set("pin2Asset", request.params.pin2Asset, {useMasterKey: true});
-	}
-	else {
-		device.set("pin2Asset", "2", {useMasterKey: true});
-	}
-	if (request.params.pin3Asset) {
-		device.set("pin3Asset", request.params.pin3Asset, {useMasterKey: true});
-	}
-	else {
-		device.set("pin3Asset", "3", {useMasterKey: true});
-	}
-	if (request.params.pin4Asset) {
-		device.set("pin4Asset"), request.params.pin4Asset, {useMasterKey: true};
-	}
-	else {
-		device.set("pin4Asset", "4", {useMasterKey: true});
-	}
+	device.set("pin1", request.params.pin1, {useMasterKey: true});
+	device.set("pin2", request.params.pin2, {useMasterKey: true});
+	device.set("pin3", request.params.pin3, {useMasterKey: true});
+	device.set("device_name", request.params.room, {useMasterKey: true});
 
-	/*
-		Save the row.
-	*/
+	// console.log("Check 4");
 	device.save(null, {useMasterKey: true})
 	.then((device) => {
 		alert("Device created successfully.");
