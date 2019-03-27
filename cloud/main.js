@@ -45,7 +45,7 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 		// Console.log("Enter username.")
 	}
 	var Device = Parse.Object.extend("Device", {useMasterKey: true});
-	// console.log("Check 1");
+	console.log("Check 1");
 	const device = new Device;
 	var query = new Parse.Query(Device);
 	query.equalTo("mac", request.params.mac);
@@ -58,7 +58,7 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 		}
 
 	);
-	// console.log("Check 2");
+	console.log("Check 2");
 	var username = request.params.user;
 	var acl = new Parse.ACL({useMasterKey: true});
 	acl.setPublicReadAccess(false, {useMasterKey: true});
@@ -79,7 +79,7 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 
 	);
 
-	// console.log("Check 3");
+	console.log("Check 3");
 	device.set("mac", request.params.mac, {useMasterKey : true});
 	device.set("local_ip", request.params.local_ip, {useMasterKey: true});
 	device.set("pin1", request.params.pin1, {useMasterKey: true});
@@ -87,7 +87,7 @@ Parse.Cloud.define('registerDevice', function(request, response) {
 	device.set("pin3", request.params.pin3, {useMasterKey: true});
 	device.set("device_name", request.params.room, {useMasterKey: true});
 
-	// console.log("Check 4");
+	console.log("Check 4");
 	device.save(null, {useMasterKey: true})
 	.then((device) => {
 		alert("Device created successfully.");
