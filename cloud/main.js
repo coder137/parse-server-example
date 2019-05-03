@@ -23,11 +23,10 @@ Parse.Cloud.define('registerDevice', async function (request, response) {
   }
 
   var deviceMac = params.mac;
-  var localIp = params.local_ip;
 
   // Check if params are supplied
-  if (deviceMac == undefined || localIp == undefined) {
-    response.error("Supply mac and local_ip parameters");
+  if (deviceMac == undefined) {
+    response.error("Supply mac parameter");
     return;
   }
 
@@ -45,11 +44,19 @@ Parse.Cloud.define('registerDevice', async function (request, response) {
     return;
   }
 
-  var pinConst = {
-    "pin_name": "",
-    "type": "switch",
-    "value": 0
-  };
+  var localIp = getString(params.local_ip);
+  var deviceName = getString(params.device_name);
+  var roomName = getString(params.roomName);
+
+  var pin1 = getPinValue(params.pin1_name, params.pin1_type);
+  var pin2 = getPinValue(params.pin2_name, params.pin2_type);
+  var pin3 = getPinValue(params.pin3_name, params.pin3_type);
+  var pin4 = getPinValue(params.pin4_name, params.pin4_type);
+
+  var pin1Asset = getPinAsset(params.pin1Asset);
+  var pin2Asset = getPinAsset(params.pin2Asset);
+  var pin3Asset = getPinAsset(params.pin3Asset);
+  var pin4Asset = getPinAsset(params.pin4Asset);
 
   const Devices = Parse.Object.extend("Devices", { useMasterKey: true });
   const device = new Devices();
@@ -58,17 +65,17 @@ Parse.Cloud.define('registerDevice', async function (request, response) {
   device.set("mac", deviceMac);
   device.set("local_ip", localIp);
 
-  device.set("device_name", "");
-  device.set("pin1", pinConst);
-  device.set("pin2", pinConst);
-  device.set("pin3", pinConst);
-  device.set("pin4", pinConst);
+  device.set("device_name", deviceName);
+  device.set("pin1", pin1);
+  device.set("pin2", pin2);
+  device.set("pin3", pin3);
+  device.set("pin4", pin4);
 
-  device.set("roomName", "");
-  device.set("pin1Asset", 0);
-  device.set("pin2Asset", 0);
-  device.set("pin3Asset", 0);
-  device.set("pin4Asset", 0);
+  device.set("roomName", roomName);
+  device.set("pin1Asset", pin1Asset);
+  device.set("pin2Asset", pin2Asset);
+  device.set("pin3Asset", pin3Asset);
+  device.set("pin4Asset", pin4Asset);
 
   var acl = currentuser.getACL();
   acl.setPublicReadAccess(false);
@@ -85,3 +92,24 @@ Parse.Cloud.define('registerDevice', async function (request, response) {
     return;
   }
 });
+
+function getString(assetName) {
+  if (assetName == undefined) assetName = "";
+  return assetName;
+}
+
+function getPinAsset(assetNumber) {
+  if (assetNumber == undefined) assetNumber = 0;
+  return assetNumber;
+}
+
+
+function getPinValue(pinName, pinType) {
+  if (pinName == undefined) pinName = "";
+  if (pinType == undefined) pinType = "";
+  return {
+    "pin_name": pinName,
+    "type": pinType,
+    "value": 0
+  };
+}
