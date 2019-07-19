@@ -1,8 +1,12 @@
 Table of Contents
 
-- [Parse-Server-Setup](#parse-server-setup)
-- [Getting Started](#getting-started)
-    - [Changes from the original `parse-server-example`](#changes-from-the-original-parse-server-example)
+[![Join The Conversation](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
+[![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
+[![Sponsors on Open Collective](https://opencollective.com/parse-server/sponsors/badge.svg)][open-collective-link]
+[![License][license-svg]][license-link]
+[![Twitter Follow](https://img.shields.io/twitter/follow/ParsePlatform.svg?label=Follow%20us%20on%20Twitter&style=social)](https://twitter.com/intent/follow?screen_name=ParsePlatform)
+
+Example project using the [parse-server](https://github.com/ParsePlatform/parse-server) module on Express.
 
 # Parse-Server-Setup
 
@@ -14,23 +18,9 @@ This is a clone of the [parse-server-example](https://github.com/parse-community
 npm install -g mongodb-runner
 ```
 
-- Install global mongodb-runner package
-- `npm install`
-    - This installs all the packages locally from `package.json`
-- `mongodb-runner start`
-    - **NOTE**: This is not persisitent storage
-    - Go [here](https://github.com/coder137/Parse-Server-Repo/tree/master/python#for-local-tests) to see how to bypass it on windows
-    - Alternative is to install `mongodb` from the [official website](https://docs.mongodb.com/manual/installation/)
-    - `mongo -v` should be greater than `version 2.6`
-    - `mongo` to start
-- Start with `npm start`
-- Runs the `index.js` file
+-----
+As of April 5, 2017, Parse, LLC has transferred this code to the parse-community organization, and will no longer be contributing to or distributing this code.
 
-## Changes from the original `parse-server-example`
-
-- Created `old` Directory
-    - `index.js`
-    - main `README.md`
-- Added `index.js` minimal code with dashboard integration
-- Updated `package.json`
-- Added *this* README.md
+[license-svg]: https://img.shields.io/badge/license-BSD-lightgrey.svg
+[license-link]: LICENSE
+[open-collective-link]: https://opencollective.com/parse-server
